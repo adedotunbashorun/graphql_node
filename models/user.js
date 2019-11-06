@@ -3,6 +3,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 
 const UserSchema = new Schema({
     email: { type: String, required: true, index: { unique: true, dropDups: true } },
@@ -26,15 +28,10 @@ class UserClass{
     }
 
     generateJWT () {
-        const today = new Date();
-        const expirationDate = new Date(today);
-        expirationDate.setDate(today.getDate() + 60);
-      
         return jwt.sign({
           email: this.email,
-          id: this._id,
-          exp: parseInt(expirationDate.getTime() / 1000, 10),
-        }, 'GRAPHQL');
+          userId: this._id,
+        }, 'somesupersecretGRAPHQL', {expiresIn: '1h'});
     }
 }
 

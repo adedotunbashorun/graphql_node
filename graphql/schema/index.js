@@ -2,6 +2,14 @@
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
+    type Booking {
+        _id: ID!
+        event: Event!
+        user: User!
+        createdAt: String
+        updatedAt: String
+    }
+
     type Event {
         _id: ID!
         title: String!
@@ -16,6 +24,13 @@ module.exports = buildSchema(`
         email: String!
         password: String
         createdEvents: [Event!]
+    }
+
+    type AuthData {
+        userId: ID!
+        token: String!
+        email: String!
+        tokenExpiration: Int!
     }
 
     input EventInput {
@@ -35,11 +50,15 @@ module.exports = buildSchema(`
     type RootQuery {
         events: [Event!]!
         users: [User!]!
+        bookings: [Booking!]!
+        login(email: String!, password: String!): AuthData!
     }
 
     type RootMutation {
         createEvent(eventInput: EventInput): Event
         createUser(userInput: UserInput): User
+        bookEvent(eventID: ID!): Booking!
+        cancelBooking(bookingID: ID!): Event!
     }
     schema {
         query: RootQuery
