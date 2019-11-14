@@ -57,8 +57,8 @@ module.exports = buildSchema(`
     type RootMutation {
         createEvent(eventInput: EventInput): Event
         createUser(userInput: UserInput): User
-        bookEvent(eventID: ID!): Booking!
-        cancelBooking(bookingID: ID!): Event!
+        bookEvent(eventId: ID!): Booking!
+        cancelBooking(bookingId: ID!): Event!
     }
     schema {
         query: RootQuery

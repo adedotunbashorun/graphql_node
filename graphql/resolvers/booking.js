@@ -1,5 +1,5 @@
 const Booking = require('../../models/booking');
-const { transformBooking, singleEvent } = require('./merge');
+const { transformBooking, singleEvent,transformEvent } = require('./merge');
 const { userVerified } = require('./../../helpers/is-verified');
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
     bookEvent: async (args, req) => {
         try {
             userVerified(req);
-            let fetchEvent  = await singleEvent(args.eventID);
+            let fetchEvent  = await singleEvent(args.eventId);
             if(!fetchEvent) throw new Error("Event Does Not Exist");
     
             let booking = new Booking({
@@ -39,9 +39,9 @@ module.exports = {
     cancelBooking: async (args, req) => {
         try {
             userVerified(req);
-            const booking = await Booking.findById(args.bookingID).populate('event');
+            const booking = await Booking.findById(args.bookingId).populate('event');
             const event =  await transformEvent(booking.event);
-            await Booking.deleteOne({ _id: args.bookingID});
+            await Booking.deleteOne({ _id: args.bookingId});
             return event;
         } catch (error) {
             throw error
